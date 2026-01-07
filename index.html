@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>长吉 GoGoGo · 文游</title>
+<style>
+body {
+  font-family: "Microsoft YaHei", sans-serif;
+  background: #f4f4f4;
+  padding: 30px;
+}
+#game {
+  max-width: 700px;
+  margin: auto;
+  background: white;
+  padding: 24px;
+  border-radius: 8px;
+}
+#text {
+  white-space: pre-wrap;
+  line-height: 1.8;
+  font-size: 16px;
+}
+button {
+  margin-top: 12px;
+  margin-right: 10px;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+<div id="game">
+  <div id="text"></div>
+  <div id="choices"></div>
+</div>
+
+<script>
+const scenes = {
+  start: {
+    text: "午后的阳光从窗边斜斜照进来，映得积木区像一小块温暖的岛。Blätti蹲在地毯上，把积木一块块推到豆豆和瑶瑶面前，邀请她们加入她的“城堡计划”。",
+    choices: [{ text: "点击继续", next: "forest" }]
+  },
+
+  forest: {
+    text: "“我们来搭一个最高的！”她的语气里带着小小的指挥官骄傲。",
+    choices: [{ text: "点击继续", next: "chase" }]
+  },
+
+  chase: {
+    text: "你闻言被吸引过来，笑着看，递给她们认为“更厉害”的积木。",
+    choices: [{ text: "点击继续", next: "come" }]
+  },
+
+  come: {
+    text: "Blätti翻找着能搭尖顶形状的积木，忽然眼睛一亮——瑶瑶手边有一块蓝色积木，她急切地指着那块积木说：“快！把那个 Blau 的给我！我要放在最上面，做一个最高的 Spitze（尖塔）！”",
+    choices: [{ text: "点击继续", next: "baby" }]
+  },
+
+  baby: {
+    text: "空气安静了一瞬。豆豆停住动作，眨眨眼：“‘布劳’是什么？”瑶瑶同样困惑不解。",
+    choices: [{ text: "点击继续", next: "why" }]
+  },
+
+  why: {
+    text: "Blätti愣住了，紧握的手悬在空中。在家里，“Blau”“Spitze” 可以随便用，她从没想过这些词在这里会听不懂。她皱起眉头，手挥舞了几下：“就是……Blau！”她又指了指积木和自己的蓝色小鞋子，试图解释：“你看！”",
+    choices: [{ text: "点击继续", next: "how" }]
+  },
+
+  how: {
+    text: "两个孩子自是没有听懂，思考几秒后便把自己手上的积木递了过去，又随手捡起自己身边的积木搭了起来。许是挫败感一下子涌上来，Blätti的声音不自觉拔高，带上哭腔：“我要做一个很高很高的……Spitze！”",
+    choices: [{ text: "点击继续", next: "who" }]
+  },
+
+  who: {
+    text: "此刻你决定如何介入？",
+    choices: [
+      { text: "单纯调节矛盾", next: "general" },
+      { text: "搭桥并解释差异", next: "good" }
+    ]
+  },
+
+  good: {
+    text: "你没有急着讲道理，而是先蹲下身，和Blätti视线同高，把声音放轻：“我听见你很着急、也有点委屈，因为你想要那块积木，可大家没听懂，对吗？”Blätti点了点头，眼泪还挂着，但哭腔稍微降下来一点。",
+    choices: [{ text: "点击继续", next: "explain" }]
+  },
+
+  explain: {
+    text: "接着你对豆豆和瑶瑶说：“Blau 是蓝色，Spitze 是塔尖。我们一起来搭最高塔吧！”你悄悄地对Blätti说：“你刚刚用了一个我们家常用的词，这是爸爸教给你的。你会说两种话，有时候脑袋会先跳出另一种词，这不是错的。但是豆豆和瑶瑶听不懂，所以我们可以给她们解释一遍吗？”",
+    choices: [{ text: "点击继续", next: "agree" }]
+  },
+
+  agree: {
+    text: "Blätti点点头，跟着你重复了一遍：“蓝色（Blau）……塔尖（Spitze）。”这一次她的声音里没有急促，只有认真。最后，她不仅回到了游戏、完成了高塔，也在心里悄悄收下了一个解释：我并不是说错了，我只是有两种方式说话。",
+    choices: [{ text: "进入夜晚", next: "night" }]
+  },
+
+  general: {
+    text: "你没有急着讲道理，而是先蹲下身，和Blätti视线同高，把声音放轻：“我听见你很着急、也有点委屈，因为你想要那块积木，可大家没听懂，对吗？”Blätti点了点头，眼泪还挂着，但哭腔稍微降下来一点。",
+    choices: [{ text: "点击继续", next: "grace" }]
+  },
+
+  grace: {
+    text: "你转向豆豆和瑶瑶，轻声说到：“她说的 Blau 就是‘蓝色’，Spitze 是‘塔尖’。她想要那块蓝色的来做塔尖。我们一起把塔搭到最高，豆豆帮我们找蓝色，瑶瑶把这块递给她，Blätti负责放到最上面，好不好？。”",
+    choices: [{ text: "点击继续", next: "graceful" }]
+  },
+
+  graceful: {
+    text: "Blätti跟着你的短句模板复述：“我要蓝色那个……谢谢。我要做塔尖。”两个孩子立马理解了这句话的意思，把蓝色的积木递给她。几分钟后，高塔稳稳立起来，几个孩子欢呼雀跃。",
+    choices: [{ text: "进入夜晚", next: "night" }]
+  },
+
+  night: {
+    text: "傍晚，Blätti在洗手间刷牙。她站在小凳子上，吐出嘴里的泡沫，抬头看见镜子被水汽蒙了一层久久不散的白，直到用手一抹，才看见自己的脸露出一角。她盯着镜子看了一会儿，突然停下来，喊道：“妈妈!”",
+    choices: [{ text: "点击继续", next: "need" }]
+  },
+
+  need: {
+    text: "你就在她身侧“监工”，立马应道：“怎么了？”",
+    choices: [{ text: "点击继续", next: "already" }]
+  },
+
+  already: {
+    text: "她迅速把脸擦干净，食指点了点镜子，问：“为什么我的眼睛不一样？蓝色的。”这个问题并不是突然出现的，她问过很多遍，你也一一解答。“他们的都是黑的！”Blätti语气更急躁了些，转过头来盯着你看，“你是蓝的。”",
+    choices: [{ text: "点击继续", next: "help" }]
+  },
+
+  help: {
+    text: "你要怎么做？",
+    choices: [
+      { text: "耐心解释", next: "one" },
+      { text: "敷衍一下", next: "two" }
+    ]
+  },
+
+  two: {
+    text: "错误！错误！错误！5–7 岁孩子反复问相似甚至同一个问题，是正常的认知发展表现。皮亚杰提出，这个年龄的孩子正处在从前运算阶段向具体运算阶段过渡的时期，新概念刚刚形成但还不稳定，孩子需要通过不断提问来反复“验证”和巩固自己的理解。对大人来说像是重复，其实是孩子在用提问的方式进行思维练习和概念建构。随着认知能力逐渐成熟，这种反复提问会自然减少。",
+    choices: [{ text: "溯回", next: "help" }]
+  },
+
+  one: {
+    text: "“因为你是混血儿，遗传了外公的蓝眼睛。”你稍蹲了蹲，“妈妈也是。”",
+    choices: [{ text: "点击继续", next: "mix" }]
+  },
+
+  mix: {
+    text: "“混血儿？”她皱着眉，问。",
+    choices: [{ text: "点击继续", next: "dumpling" }]
+  },
+
+  dumpling: {
+    text: "你想了想，回道：“就像我们昨天吃的饺子，有牛肉馅儿的，有猪肉馅儿的，把他们包在一起就有了牛肉猪肉馅儿。外婆是中国人，外公是俄罗斯人，所以妈妈是中国、俄罗斯混血；爸爸是德国人，所以你是中国、俄罗斯、德国混血。”",
+    choices: [{ text: "点击继续", next: "dizzy" }]
+  },
+
+  dizzy: {
+    text: "她挠了挠头，显然“这一圈儿”把她绕晕了。",
+    choices: [{ text: "点击继续", next: "ask" }]
+  },
+
+  ask: {
+    text: "“你听懂了吗？”语毕，她低下头把两手搓在一起，一扭一扭，嘴里叽里咕噜不知道说着什么。突然又猛地抬头，呲着大牙笑：“妈妈我想吃饺子。”",
+    choices: [{ text: "点击继续", next: "calm" }]
+  },
+
+  calm: {
+    text: "答案显而易见——没有。但你明白，有些事是要慢慢来的。5–7 岁的孩子之所以难以完全理解“混血儿”，并不是知识不够，而是认知发展阶段所限。按照皮亚杰的认知发展理论，这个年龄的孩子正处在从前运算阶段向具体运算阶段过渡的时期，他们的思维仍以具体、单一维度为主，难以同时整合“一个人可以同时来自两个不同来源”这样的复合概念。孩子往往会抓住最显眼的一个特征来理解身份，比如外貌或国籍，因此对“混血”这种跨类别的概念感到困惑。这是一种正常的发展现象，随着认知能力成熟，孩子才会逐渐理解多重身份的并存。",
+    choices: [{ text: "重新开始", next: "start" }]
+  }
+};
+
+const textEl = document.getElementById("text");
+const choicesEl = document.getElementById("choices");
+
+function showScene(id) {
+  const scene = scenes[id];
+  textEl.innerText = scene.text;
+  choicesEl.innerHTML = "";
+  scene.choices.forEach(c => {
+    const btn = document.createElement("button");
+    btn.innerText = c.text;
+    btn.onclick = () => showScene(c.next);
+    choicesEl.appendChild(btn);
+  });
+}
+
+showScene("start");
+</script>
+</body>
+</html>
